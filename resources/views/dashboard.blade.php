@@ -78,12 +78,18 @@
                     @endif
 
                     @if($role == 'petugas')
-                        <a href="/validasi-tiket"
-                           class="flex items-center gap-3 px-5 py-3 rounded-xl text-white/55 hover:bg-white/10 hover:text-white transition">
-                            <span>✅</span>
-                            <span>Validasi Tiket</span>
-                        </a>
-                    @endif
+    <a href="/scan-tiket"
+       class="flex items-center gap-3 px-5 py-3 rounded-xl text-white/55 hover:bg-white/10 hover:text-white transition">
+        <span>📷</span>
+        <span>Scan Tiket</span>
+    </a>
+
+    <a href="/validasi-tiket"
+       class="flex items-center gap-3 px-5 py-3 rounded-xl text-white/55 hover:bg-white/10 hover:text-white transition">
+        <span>⌨️</span>
+        <span>Validasi Manual</span>
+    </a>
+@endif
 
                 </nav>
             </div>
@@ -268,14 +274,27 @@
                     @endif
 
                     @if($role == 'petugas')
-                        <h3 class="text-xl font-bold mb-1">Menu Petugas</h3>
-                        <p class="text-white/35 mb-6">Validasi tiket pengunjung</p>
+    <h3 class="text-xl font-bold mb-1">Menu Petugas</h3>
+    <p class="text-white/35 mb-6">Validasi tiket pengunjung</p>
 
-                        <a href="/validasi-tiket" class="block p-5 rounded-xl bg-white/5 border border-white/10 hover:bg-red-500/20 hover:border-red-400/40 transition">
-                            <p class="font-semibold">Validasi Tiket</p>
-                            <p class="text-sm text-white/35 mt-1">Cek kode tiket dan ubah status tiket</p>
-                        </a>
-                    @endif
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <a href="/scan-tiket"
+           class="p-5 rounded-xl bg-white/5 border border-white/10 hover:bg-purple-500/20 hover:border-purple-400/40 transition">
+            <p class="font-semibold">Scan Tiket</p>
+            <p class="text-sm text-white/35 mt-1">
+                Scan QR Code tiket menggunakan kamera.
+            </p>
+        </a>
+
+        <a href="/validasi-tiket"
+           class="p-5 rounded-xl bg-white/5 border border-white/10 hover:bg-red-500/20 hover:border-red-400/40 transition">
+            <p class="font-semibold">Validasi Manual</p>
+            <p class="text-sm text-white/35 mt-1">
+                Masukkan kode tiket secara manual.
+            </p>
+        </a>
+    </div>
+@endif
 
                 </div>
 

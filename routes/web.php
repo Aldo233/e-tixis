@@ -30,9 +30,12 @@ Route::middleware('auth')->group(function () {
 
     // PETUGAS: validasi tiket
     Route::middleware('petugas')->group(function () {
-        Route::get('/validasi-tiket', [ValidationController::class, 'index']);
-        Route::post('/validasi-tiket', [ValidationController::class, 'check']);
-    });
+    Route::get('/validasi-tiket', [ValidationController::class, 'index']);
+    Route::post('/validasi-tiket', [ValidationController::class, 'check']);
+
+    Route::get('/scan-tiket', [ValidationController::class, 'scan'])->name('tickets.scan');
+    Route::post('/scan-tiket', [ValidationController::class, 'scanCheck'])->name('tickets.scan.check');
+});
 
     // PROFILE
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
