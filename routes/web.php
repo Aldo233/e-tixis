@@ -16,26 +16,33 @@ Route::get('/dashboard', function () {
 
 Route::middleware('auth')->group(function () {
 
-    // ADMIN: kelola event
+    // --- BAGIAN INI DIUBAH ---
+    // Pindahkan resource events ke sini agar semua role (Admin & User) bisa akses
+    // Controller kita sudah punya logika @if(role == admin) untuk membedakan tampilannya
+    Route::resource('events', EventController::class);
+
+    // Sekarang di dalam middleware admin, kamu tidak perlu lagi mendaftarkan resource events
     Route::middleware('admin')->group(function () {
-        Route::resource('events', EventController::class);
+        // Biarkan kosong atau isi dengan route admin lainnya selain events
     });
 
     // USER: pesan tiket dan lihat tiket
-    Route::get('/daftar-event', [TicketController::class, 'eventList'])->name('user.events');
+    // Ganti route '/daftar-event' agar mengarah ke EventController juga
+    Route::get('/daftar-event', [EventController::class, 'index'])->name('user.events');
+    
     Route::get('/pesan-tiket/{event}', [TicketController::class, 'create']);
     Route::post('/pesan-tiket/{event}', [TicketController::class, 'store']);
     Route::get('/tiket-saya', [TicketController::class, 'myTickets']);
+    // -------------------------
 
 
     // PETUGAS: validasi tiket
     Route::middleware('petugas')->group(function () {
-    Route::get('/validasi-tiket', [ValidationController::class, 'index']);
-    Route::post('/validasi-tiket', [ValidationController::class, 'check']);
-
-    Route::get('/scan-tiket', [ValidationController::class, 'scan'])->name('tickets.scan');
-    Route::post('/scan-tiket', [ValidationController::class, 'scanCheck'])->name('tickets.scan.check');
-});
+        Route::get('/validasi-tiket', [ValidationController::class, 'index']);
+        Route::post('/validasi-tiket', [ValidationController::class, 'check']);
+        Route::get('/scan-tiket', [ValidationController::class, 'scan'])->name('tickets.scan');
+        Route::post('/scan-tiket', [ValidationController::class, 'scanCheck'])->name('tickets.scan.check');
+    });
 
     // PROFILE
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
