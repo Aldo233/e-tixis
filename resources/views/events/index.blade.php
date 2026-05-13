@@ -8,7 +8,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Events - E-TIXIS</title>
+    <title>Daftar Event - E-TIXIS</title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 
@@ -36,18 +36,13 @@
 
                     <a href="/events" class="flex items-center gap-3 px-5 py-3 rounded-xl bg-purple-700/40 text-white">
                         <span>🎪</span>
-                        <span>{{ $role == 'admin' ? 'Kelola Event' : 'Lihat Event' }}</span>
+                        <span>Events</span>
                     </a>
 
                     @if($role == 'admin')
                         <a href="/events/create" class="flex items-center gap-3 px-5 py-3 rounded-xl text-white/55 hover:bg-white/10 hover:text-white transition">
                             <span>➕</span>
                             <span>Tambah Event</span>
-                        </a>
-                    @else
-                        <a href="#" class="flex items-center gap-3 px-5 py-3 rounded-xl text-white/55 hover:bg-white/10 hover:text-white transition">
-                            <span>🎟️</span>
-                            <span>Tiket Saya</span>
                         </a>
                     @endif
                 </nav>
@@ -70,8 +65,8 @@
             {{-- TOP HEADER --}}
             <div class="flex items-center justify-between mb-8">
                 <div>
-                    <h2 class="text-3xl font-bold">{{ $role == 'admin' ? 'Manajemen Event' : 'Jelajahi Event' }}</h2>
-                    <p class="text-white/35 mt-1">{{ $role == 'admin' ? 'Kelola semua data event di sistem' : 'Pilih dan pesan tiket event yang kamu inginkan' }}</p>
+                    <h2 class="text-3xl font-bold">Daftar Event</h2>
+                    <p class="text-white/35 mt-1">Kelola semua event yang tersedia di sistem</p>
                 </div>
 
                 <div class="flex items-center gap-4">
@@ -87,13 +82,13 @@
                 </div>
             </div>
 
+            {{-- TABEL/KONTEN --}}
             @if($role == 'admin')
-                {{-- TABLE SECTION (KHUSUS ADMIN) --}}
-                <section class="bg-[#18182c] border border-white/10 rounded-2xl overflow-hidden shadow-2xl">
-                    <div class="p-6 border-b border-white/10 flex justify-between items-center bg-white/5">
-                        <h3 class="text-xl font-bold">Daftar Inventori Event</h3>
+                <section class="bg-[#18182c] border border-white/10 rounded-2xl overflow-hidden">
+                    <div class="p-6 border-b border-white/10 flex justify-between items-center">
+                        <h3 class="text-xl font-bold">Semua Event</h3>
                         <a href="/events/create" class="bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded-xl text-sm transition font-semibold">
-                            + Tambah Baru
+                            + Tambah Event Baru
                         </a>
                     </div>
 
@@ -113,20 +108,27 @@
                                 @foreach ($events as $index => $event)
                                 <tr class="hover:bg-white/[0.02] transition">
                                     <td class="px-6 py-4 text-white/40">{{ $index + 1 }}</td>
-                                    <td class="px-6 py-4"><span class="font-bold text-purple-300">{{ $event->nama_event }}</span></td>
+                                    <td class="px-6 py-4">
+                                        <span class="font-bold text-purple-300">{{ $event->nama_event }}</span>
+                                    </td>
                                     <td class="px-6 py-4 text-white/70">{{ $event->tanggal }}</td>
                                     <td class="px-6 py-4 text-white/70">{{ $event->lokasi }}</td>
                                     <td class="px-6 py-4 text-center">
-                                        <span class="px-3 py-1 rounded-full bg-emerald-500/10 text-emerald-400 text-xs border border-emerald-500/20 font-bold">
+                                        <span class="px-3 py-1 rounded-full bg-emerald-500/10 text-emerald-400 text-xs border border-emerald-500/20">
                                             {{ $event->kuota }}
                                         </span>
                                     </td>
                                     <td class="px-6 py-4 text-center">
                                         <div class="flex justify-center gap-2">
-                                            <a href="/events/{{ $event->id }}/edit" class="p-2 bg-blue-500/10 text-blue-400 border border-blue-500/20 rounded-lg hover:bg-blue-500/20 transition">✏️</a>
+                                            <a href="/events/{{ $event->id }}/edit" class="p-2 bg-blue-500/10 text-blue-400 border border-blue-500/20 rounded-lg hover:bg-blue-500/20 transition">
+                                                ✏️
+                                            </a>
                                             <form action="/events/{{ $event->id }}" method="POST" class="inline">
-                                                @csrf @method('DELETE')
-                                                <button type="submit" class="p-2 bg-red-500/10 text-red-400 border border-red-500/20 rounded-lg hover:bg-red-500/20 transition" onclick="return confirm('Hapus?')">🗑️</button>
+                                                @csrf
+                                                @method('DELETE')
+                                                <button type="submit" class="p-2 bg-red-500/10 text-red-400 border border-red-500/20 rounded-lg hover:bg-red-500/20 transition" onclick="return confirm('Hapus event ini?')">
+                                                    🗑️
+                                                </button>
                                             </form>
                                         </div>
                                     </td>
@@ -137,25 +139,20 @@
                     </div>
                 </section>
             @else
-                {{-- CARD SECTION (KHUSUS USER) --}}
-                <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8">
+                {{-- TAMPILAN USER (CARD MODE) --}}
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                     @foreach ($events as $event)
-                    <div class="bg-[#18182c] border border-white/10 rounded-[2.5rem] overflow-hidden hover:border-purple-500/50 transition-all duration-300 hover:-translate-y-2 group shadow-xl">
-                        <div class="h-44 bg-gradient-to-br from-purple-900/30 to-fuchsia-900/30 p-8 flex items-start justify-between">
-                            <span class="bg-emerald-500/20 text-emerald-400 text-[10px] font-bold px-3 py-1 rounded-full border border-emerald-500/20 uppercase tracking-tighter">Tersedia</span>
-                        </div>
-                        <div class="p-8 -mt-12 bg-[#18182c] rounded-t-[2.5rem]">
-                            <h3 class="text-xl font-bold mb-4 group-hover:text-purple-400 transition line-clamp-1">{{ $event->nama_event }}</h3>
-                            <div class="space-y-3 mb-8 text-sm text-white/50">
-                                <div class="flex items-center gap-3"><span>📅</span> {{ $event->tanggal }}</div>
-                                <div class="flex items-center gap-3"><span>📍</span> {{ $event->lokasi }}</div>
-                                <div class="flex items-center gap-3"><span>👥</span> Sisa Kuota: <span class="text-emerald-400 font-bold">{{ $event->kuota }}</span></div>
+                        <div class="bg-[#18182c] border border-white/10 rounded-2xl p-6 hover:border-purple-500/50 transition group">
+                            <h3 class="text-xl font-bold mb-2 group-hover:text-purple-400">{{ $event->nama_event }}</h3>
+                            <div class="space-y-2 text-sm text-white/50 mb-6">
+                                <p>📅 {{ $event->tanggal }}</p>
+                                <p>📍 {{ $event->lokasi }}</p>
+                                <p>👥 Kuota: {{ $event->kuota }}</p>
                             </div>
-                            <button class="w-full bg-purple-600 hover:bg-purple-500 text-white py-4 rounded-2xl font-bold transition-all shadow-lg shadow-purple-900/20">
-                                Pesan Tiket Sekarang
+                            <button class="w-full bg-purple-600 hover:bg-purple-500 py-3 rounded-xl font-bold transition">
+                                Pesan Tiket
                             </button>
                         </div>
-                    </div>
                     @endforeach
                 </div>
             @endif
