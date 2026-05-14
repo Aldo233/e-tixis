@@ -21,7 +21,7 @@
 </head>
 <body class="bg-[#0b0b18] text-white antialiased overflow-x-hidden">
     
-    {{-- Background Glow Dekoratif --}}
+    {{-- Background Glow --}}
     <div class="fixed top-0 left-0 w-full h-full -z-10">
         <div class="absolute top-[-10%] left-[-10%] w-[600px] h-[600px] bg-purple-600/20 rounded-full blur-[120px]"></div>
         <div class="absolute bottom-[-10%] right-[-10%] w-[500px] h-[500px] bg-fuchsia-600/10 rounded-full blur-[100px]"></div>
@@ -67,16 +67,13 @@
             Pesan tiket konser, festival, dan acara favoritmu dengan sistem QR Code yang praktis.
         </p>
 
-        <div class="flex flex-col sm:flex-row gap-5">
-            <a href="{{ route('register') }}" class="bg-gradient-to-r from-purple-600 to-fuchsia-600 px-12 py-5 rounded-2xl font-black text-sm tracking-widest hover:scale-105 transition-all shadow-2xl shadow-purple-500/25 uppercase">
+        <div class="flex justify-center">
+            <a href="{{ route('register') }}" class="bg-gradient-to-r from-purple-600 to-fuchsia-600 px-16 py-6 rounded-2xl font-black text-sm tracking-[0.2em] hover:scale-105 active:scale-95 transition-all shadow-2xl shadow-purple-500/25 uppercase">
                 Cari Event Sekarang
-            </a>
-            <a href="#about" class="glass px-12 py-5 rounded-2xl font-black text-sm tracking-widest hover:bg-white/5 transition-all text-white/70 uppercase">
-                Tentang Kami
             </a>
         </div>
 
-        {{-- Highlight Category --}}
+        {{-- Categories --}}
         <div class="mt-32 grid grid-cols-1 md:grid-cols-3 gap-8 w-full max-w-5xl">
             <div class="glass p-10 rounded-[2.5rem] text-left hover:border-purple-500/50 transition-all group">
                 <div class="w-12 h-12 bg-purple-600/20 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
@@ -105,12 +102,9 @@
     </main>
 
     <footer class="py-16 text-center">
-        <p class="text-white/20 text-[10px] font-black tracking-[0.4em] uppercase mb-4">
+        <p class="text-white/20 text-[10px] font-black tracking-[0.4em] uppercase">
             &copy; 2026 E-TIXIS LAMPUNG
         </p>
-        <div class="flex justify-center gap-6 opacity-30">
-            {{-- Tambahkan link sosial media jika ada --}}
-        </div>
     </footer>
 
 </body>
