@@ -7,12 +7,14 @@ use App\Models\Order;
 
 class Event extends Model
 {
-    protected $fillable = [
+   protected $fillable = [
     'nama_event',
     'tanggal',
     'lokasi',
     'kuota',
-]; 
+    'harga',
+    'gambar_event',
+];
     public function orders()
     {
         return $this->hasMany(Order::class);

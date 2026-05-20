@@ -10,7 +10,14 @@ use Illuminate\Support\Str;
 
 class TicketController extends Controller
 {
-    public function create(Event $event)
+public function events()
+{
+    $events = Event::latest()->get();
+
+    return view('tickets.events', compact('events'));
+}    
+
+public function create(Event $event)
     {
         return view('tickets.create', compact('event'));
     }

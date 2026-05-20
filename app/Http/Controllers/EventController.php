@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Event;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class EventController extends Controller
 {
@@ -24,47 +25,75 @@ class EventController extends Controller
             'nama_event' => 'required',
             'tanggal' => 'required|date',
             'lokasi' => 'required',
-            'kuota' => 'required|integer',
+            'kuota' => 'required|integer|min:1',
+            'harga' => 'required|integer|min:0',
+            'gambar_event' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
         ]);
 
-        Event::create($request->only([
-            'nama_event',
-            'tanggal',
-            'lokasi',
-            'kuota',
-        ]));
+        $gambarPath = null;
+
+        if ($request->hasFile('gambar_event')) {
+            $gambarPath = $request->file('gambar_event')->store('event-images', 'public');
+        }
+
+        Event::create([
+            'nama_event' => $request->nama_event,
+            'tanggal' => $request->tanggal,
+            'lokasi' => $request->lokasi,
+            'kuota' => $request->kuota,
+            'harga' => $request->harga,
+            'gambar_event' => $gambarPath,
+        ]);
 
         return redirect('/events')->with('success', 'Event berhasil ditambahkan.');
     }
 
     public function edit(Event $event)
-{
-    return view('events.edit', compact('event'));
-}
+    {
+        return view('events.edit', compact('event'));
+    }
 
-public function update(Request $request, Event $event)
-{
-    $request->validate([
-        'nama_event' => 'required',
-        'tanggal' => 'required|date',
-        'lokasi' => 'required',
-        'kuota' => 'required|integer',
-    ]);
+    public function update(Request $request, Event $event)
+    {
+        $request->validate([
+            'nama_event' => 'required',
+            'tanggal' => 'required|date',
+            'lokasi' => 'required',
+            'kuota' => 'required|integer|min:1',
+            'harga' => 'required|integer|min:0',
+            'gambar_event' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
+        ]);
 
-    $event->update($request->only([
-        'nama_event',
-        'tanggal',
-        'lokasi',
-        'kuota',
-    ]));
+        $gambarPath = $event->gambar_event;
 
-    return redirect('/events')->with('success', 'Event berhasil diperbarui.');
-}
+        if ($request->hasFile('gambar_event')) {
+            if ($event->gambar_event) {
+                Storage::disk('public')->delete($event->gambar_event);
+            }
 
-public function destroy(Event $event)
-{
-    $event->delete();
+            $gambarPath = $request->file('gambar_event')->store('event-images', 'public');
+        }
 
-    return redirect('/events')->with('success', 'Event berhasil dihapus.');
-}
+        $event->update([
+            'nama_event' => $request->nama_event,
+            'tanggal' => $request->tanggal,
+            'lokasi' => $request->lokasi,
+            'kuota' => $request->kuota,
+            'harga' => $request->harga,
+            'gambar_event' => $gambarPath,
+        ]);
+
+        return redirect('/events')->with('success', 'Event berhasil diperbarui.');
+    }
+
+    public function destroy(Event $event)
+    {
+        if ($event->gambar_event) {
+            Storage::disk('public')->delete($event->gambar_event);
+        }
+
+        $event->delete();
+
+        return redirect('/events')->with('success', 'Event berhasil dihapus.');
+    }
 }

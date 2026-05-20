@@ -14,37 +14,59 @@ Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
+
 Route::middleware('auth')->group(function () {
 
-    // --- BAGIAN INI DIUBAH ---
-    // Pindahkan resource events ke sini agar semua role (Admin & User) bisa akses
-    // Controller kita sudah punya logika @if(role == admin) untuk membedakan tampilannya
-    Route::resource('events', EventController::class);
-
-    // Sekarang di dalam middleware admin, kamu tidak perlu lagi mendaftarkan resource events
+    /*
+    |--------------------------------------------------------------------------
+    | ADMIN
+    |--------------------------------------------------------------------------
+    | Hanya admin yang boleh mengakses:
+    | /events
+    | /events/create
+    | /events/{id}/edit
+    | tambah, edit, hapus event
+    */
     Route::middleware('admin')->group(function () {
-        // Biarkan kosong atau isi dengan route admin lainnya selain events
+        Route::resource('events', EventController::class);
     });
 
-    // USER: pesan tiket dan lihat tiket
-    // Ganti route '/daftar-event' agar mengarah ke EventController juga
-    Route::get('/daftar-event', [EventController::class, 'index'])->name('user.events');
-    
+
+    /*
+    |--------------------------------------------------------------------------
+    | USER
+    |--------------------------------------------------------------------------
+    | User biasa hanya boleh melihat daftar event versi user,
+    | pesan tiket, dan melihat tiket miliknya sendiri.
+    */
+    Route::get('/daftar-event', [TicketController::class, 'events'])->name('user.events');
+
     Route::get('/pesan-tiket/{event}', [TicketController::class, 'create']);
     Route::post('/pesan-tiket/{event}', [TicketController::class, 'store']);
+
     Route::get('/tiket-saya', [TicketController::class, 'myTickets']);
-    // -------------------------
 
 
-    // PETUGAS: validasi tiket
+    /*
+    |--------------------------------------------------------------------------
+    | PETUGAS
+    |--------------------------------------------------------------------------
+    | Petugas hanya untuk validasi tiket.
+    */
     Route::middleware('petugas')->group(function () {
         Route::get('/validasi-tiket', [ValidationController::class, 'index']);
         Route::post('/validasi-tiket', [ValidationController::class, 'check']);
+
         Route::get('/scan-tiket', [ValidationController::class, 'scan'])->name('tickets.scan');
         Route::post('/scan-tiket', [ValidationController::class, 'scanCheck'])->name('tickets.scan.check');
     });
 
-    // PROFILE
+
+    /*
+    |--------------------------------------------------------------------------
+    | PROFILE
+    |--------------------------------------------------------------------------
+    */
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
