@@ -15,14 +15,21 @@
     {{-- SIDEBAR --}}
     <aside class="w-64 bg-[#111126] border-r border-white/10 hidden lg:flex flex-col shrink-0">
 
-        <div class="p-8 flex items-center gap-4">
-            <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-purple-500 to-fuchsia-600 shadow-lg"></div>
+        {{-- LOGO --}}
+    <div class="p-7">
 
-            <div>
-                <h1 class="text-2xl font-black tracking-tight">E-TIXIS</h1>
-                <p class="text-sm text-purple-400 font-bold tracking-widest">MANAJEMEN</p>
-            </div>
-        </div>
+        <a href="/dashboard"
+        class="block w-full h-24 rounded-3xl bg-[#18182c] border border-white/10 shadow-lg overflow-hidden">
+
+            <img 
+                src="{{ asset('images/logo-icon-etixis.png') }}" 
+                alt="Logo E-TIXIS"
+                class="w-full h-full object-contain scale-150"
+            >
+
+        </a>
+
+    </div>
 
         <div class="px-6 mt-8">
             <p class="text-xs uppercase tracking-[0.3em] text-white/35 mb-5">
