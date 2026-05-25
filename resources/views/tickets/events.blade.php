@@ -120,6 +120,23 @@
                             </h2>
                         </div>
 
+                        {{-- DESKRIPSI EVENT --}}
+                        <div class="mb-5 bg-white/5 border border-white/10 rounded-2xl p-4">
+                            <p class="text-sm text-white/40 mb-2 font-semibold">
+                                Deskripsi Event
+                            </p>
+
+                            <p class="text-white/70 text-sm leading-relaxed">
+                                @if(!empty($event->deskripsi))
+                                    {{ \Illuminate\Support\Str::limit($event->deskripsi, 120) }}
+                                @elseif(!empty($event->deskripsi_event))
+                                    {{ \Illuminate\Support\Str::limit($event->deskripsi_event, 120) }}
+                                @else
+                                    Belum ada deskripsi untuk event ini.
+                                @endif
+                            </p>
+                        </div>
+
                         <div class="space-y-3 text-white/55">
 
                             <div class="flex items-center gap-3">

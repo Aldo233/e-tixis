@@ -16,22 +16,19 @@
     <aside class="w-64 bg-[#111126] border-r border-white/10 hidden lg:flex flex-col shrink-0">
 
         {{-- LOGO --}}
-    <div class="p-7">
+        <div class="p-7">
+            <a href="/dashboard"
+               class="block w-full h-24 rounded-3xl bg-[#18182c] border border-white/10 shadow-lg overflow-hidden">
 
-        <a href="/dashboard"
-        class="block w-full h-24 rounded-3xl bg-[#18182c] border border-white/10 shadow-lg overflow-hidden">
+                <img
+                    src="{{ asset('images/logo-icon-etixis.png') }}"
+                    alt="Logo E-TIXIS"
+                    class="w-full h-full object-contain scale-125"
+                >
+            </a>
+        </div>
 
-            <img 
-                src="{{ asset('images/logo-icon-etixis.png') }}" 
-                alt="Logo E-TIXIS"
-                class="w-full h-full object-contain scale-150"
-            >
-
-        </a>
-
-    </div>
-
-        <div class="px-6 mt-8">
+        <div class="px-6 mt-4">
             <p class="text-xs uppercase tracking-[0.3em] text-white/35 mb-5">
                 Menu Utama
             </p>
@@ -74,7 +71,7 @@
     </aside>
 
     {{-- MAIN CONTENT --}}
-  <main class="flex-1 px-5 py-10 lg:px-8 overflow-hidden">
+    <main class="flex-1 px-5 py-10 lg:px-8 overflow-hidden">
 
         {{-- TOP HEADER --}}
         <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-6 mb-10">
@@ -181,7 +178,7 @@
                         <thead>
                             <tr class="bg-[#141426] border-b border-white/10 text-white/40 uppercase tracking-[0.25em] text-xs">
                                 <th class="px-5 py-5 text-left w-[70px]">No</th>
-                                <th class="px-5 py-5 text-left w-[330px]">Detail Event</th>
+                                <th class="px-5 py-5 text-left w-[360px]">Detail Event</th>
                                 <th class="px-5 py-5 text-left w-[180px]">Lokasi</th>
                                 <th class="px-5 py-5 text-left w-[140px]">Harga</th>
                                 <th class="px-5 py-5 text-left w-[130px]">Kuota</th>
@@ -203,13 +200,13 @@
                                     {{-- DETAIL EVENT --}}
                                     <td class="px-5 py-5 align-middle">
 
-                                        <div class="flex items-center gap-4 min-w-0">
+                                        <div class="flex items-start gap-4 min-w-0">
 
                                             @if($event->gambar_event)
                                                 <img
                                                     src="{{ asset('storage/' . $event->gambar_event) }}"
                                                     alt="Gambar Event"
-                                                   class="w-14 h-14 rounded-xl object-cover border border-white/10 bg-white shrink-0"
+                                                    class="w-14 h-14 rounded-xl object-cover border border-white/10 bg-white shrink-0"
                                                 >
                                             @else
                                                 <div class="w-14 h-14 rounded-xl bg-purple-500/20 border border-purple-500/20 flex items-center justify-center text-2xl shrink-0">
@@ -218,6 +215,7 @@
                                             @endif
 
                                             <div class="min-w-0">
+
                                                 <h3 class="text-lg font-black text-white leading-tight">
                                                     {{ $event->nama_event }}
                                                 </h3>
@@ -226,15 +224,26 @@
                                                     📅 {{ \Carbon\Carbon::parse($event->tanggal)->translatedFormat('d F Y') }}
                                                 </p>
 
+                                                @if($event->deskripsi)
+                                                    <p class="text-sm text-white/45 mt-2 leading-relaxed max-w-sm">
+                                                        {{ \Illuminate\Support\Str::limit($event->deskripsi, 95) }}
+                                                    </p>
+                                                @else
+                                                    <p class="text-sm text-white/25 mt-2 italic">
+                                                        Belum ada deskripsi
+                                                    </p>
+                                                @endif
+
                                                 @if($event->gambar_event)
-                                                    <p class="text-xs text-purple-400 mt-1 font-bold">
+                                                    <p class="text-xs text-purple-400 mt-2 font-bold">
                                                         Gambar tersedia
                                                     </p>
                                                 @else
-                                                    <p class="text-xs text-white/35 mt-1 font-bold">
+                                                    <p class="text-xs text-white/35 mt-2 font-bold">
                                                         Tanpa gambar
                                                     </p>
                                                 @endif
+
                                             </div>
 
                                         </div>

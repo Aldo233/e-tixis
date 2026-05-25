@@ -1,98 +1,110 @@
 import { Html5Qrcode } from "html5-qrcode";
 
+let html5QrCode = null;
+let isScanning = false;
+
+const readerId = "reader";
+const startScanBtn = document.getElementById("startScanBtn");
+const stopScanBtn = document.getElementById("stopScanBtn");
+const cameraStatus = document.getElementById("cameraStatus");
 const resultBox = document.getElementById("resultBox");
 const manualForm = document.getElementById("manualForm");
 const manualCode = document.getElementById("manualCode");
 
-const startScanBtn = document.getElementById("startScanBtn");
-const stopScanBtn = document.getElementById("stopScanBtn");
-const cameraStatus = document.getElementById("cameraStatus");
-
-const html5QrCode = new Html5Qrcode("reader");
-
-let isScanning = false;
-let lastScanned = null;
-let scanLocked = false;
-
-function showResult(type, message, code = null) {
-    resultBox.className = "alert";
+function showResult(type, message, data = null) {
+    let alertClass = "alert bg-[#111126] border border-white/10 text-white";
 
     if (type === "success") {
-        resultBox.classList.add("alert-success");
-    } else {
-        resultBox.classList.add("alert-error");
+        alertClass = "alert alert-success text-white";
     }
 
+    if (type === "error") {
+        alertClass = "alert alert-error text-white";
+    }
+
+    let detailHtml = "";
+
+    if (data) {
+        detailHtml = `
+            <div class="mt-3 text-sm space-y-1">
+                <p><strong>Kode:</strong> ${data.kode ?? "-"}</p>
+                <p><strong>Event:</strong> ${data.event ?? "-"}</p>
+                <p><strong>Tanggal:</strong> ${data.tanggal ?? "-"}</p>
+                <p><strong>Lokasi:</strong> ${data.lokasi ?? "-"}</p>
+                <p><strong>Pemilik:</strong> ${data.pemilik ?? "-"}</p>
+                <p><strong>Status:</strong> ${data.status_tiket ?? "-"}</p>
+            </div>
+        `;
+    }
+
+    resultBox.className = alertClass;
     resultBox.innerHTML = `
         <div>
-            <div class="font-bold">${message}</div>
-            ${code ? `<div class="text-sm mt-1">Kode: ${code}</div>` : ""}
+            <span>${message}</span>
+            ${detailHtml}
         </div>
     `;
 }
 
-async function validateTicket(code) {
+async function validateTicket(kodeUnik) {
+    if (!kodeUnik) {
+        showResult("error", "Kode tiket tidak boleh kosong.");
+        return;
+    }
+
     try {
+        showResult("info", "Sedang memvalidasi tiket...");
+
         const response = await fetch(window.scanTicketUrl, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
                 "X-CSRF-TOKEN": window.csrfToken,
-                "Accept": "application/json"
+                "Accept": "application/json",
             },
             body: JSON.stringify({
-                kode_unik: code
-            })
+                kode_unik: kodeUnik,
+            }),
         });
 
         const data = await response.json();
 
-        showResult(data.status, data.message, data.kode ?? code);
-
+        if (data.status === "success") {
+            showResult("success", data.message, data);
+        } else {
+            showResult("error", data.message, data);
+        }
     } catch (error) {
         showResult("error", "Terjadi kesalahan saat validasi tiket.");
+        console.error(error);
     }
 }
 
 async function startScanner() {
+    if (isScanning) return;
+
+    html5QrCode = new Html5Qrcode(readerId);
+
     try {
-        cameraStatus.innerText = "Meminta izin kamera...";
-
-        const cameras = await Html5Qrcode.getCameras();
-
-        if (!cameras || cameras.length === 0) {
-            cameraStatus.innerText = "Kamera tidak ditemukan.";
-            showResult("error", "Kamera tidak ditemukan di perangkat ini.");
-            return;
-        }
-
-        const cameraId = cameras[0].id;
-
         await html5QrCode.start(
-            cameraId,
+            { facingMode: "environment" },
             {
                 fps: 10,
                 qrbox: {
                     width: 250,
-                    height: 250
-                }
+                    height: 250,
+                },
             },
-            (decodedText) => {
-                if (scanLocked || decodedText === lastScanned) {
-                    return;
-                }
+            async (decodedText) => {
+                if (!decodedText) return;
 
-                lastScanned = decodedText;
-                scanLocked = true;
+                await stopScanner();
 
-                validateTicket(decodedText);
-
-                setTimeout(() => {
-                    scanLocked = false;
-                }, 3000);
+                showResult("info", "QR Code berhasil dibaca. Memproses validasi...");
+                await validateTicket(decodedText);
             },
             () => {
-                // error scan kecil diabaikan supaya tidak spam
+                // error kecil saat kamera membaca frame diabaikan
             }
         );
 
@@ -100,43 +112,38 @@ async function startScanner() {
         startScanBtn.disabled = true;
         stopScanBtn.disabled = false;
         cameraStatus.innerText = "Kamera aktif. Arahkan ke QR Code tiket.";
-
     } catch (error) {
-        cameraStatus.innerText = "Gagal mengakses kamera.";
-        showResult("error", "Gagal mengakses kamera. Pastikan izin kamera di browser sudah diaktifkan.");
+        cameraStatus.innerText = "Kamera gagal dibuka. Pastikan izin kamera sudah diberikan.";
+        showResult("error", "Kamera gagal dibuka. Coba cek izin kamera browser.");
+        console.error(error);
     }
 }
 
 async function stopScanner() {
-    if (!isScanning) {
-        return;
-    }
+    if (!html5QrCode || !isScanning) return;
 
     try {
         await html5QrCode.stop();
+        await html5QrCode.clear();
 
         isScanning = false;
         startScanBtn.disabled = false;
         stopScanBtn.disabled = true;
-        cameraStatus.innerText = "Kamera dihentikan.";
-
+        cameraStatus.innerText = "Kamera berhenti.";
     } catch (error) {
-        showResult("error", "Gagal menghentikan kamera.");
+        console.error(error);
     }
 }
 
-startScanBtn.addEventListener("click", startScanner);
-stopScanBtn.addEventListener("click", stopScanner);
+startScanBtn?.addEventListener("click", startScanner);
+stopScanBtn?.addEventListener("click", stopScanner);
 
-manualForm.addEventListener("submit", function (event) {
-    event.preventDefault();
+manualForm?.addEventListener("submit", async function (e) {
+    e.preventDefault();
 
-    const code = manualCode.value.trim();
+    const kodeUnik = manualCode.value.trim();
 
-    if (!code) {
-        showResult("error", "Kode tiket wajib diisi.");
-        return;
-    }
+    await validateTicket(kodeUnik);
 
-    validateTicket(code);
+    manualCode.value = "";
 });

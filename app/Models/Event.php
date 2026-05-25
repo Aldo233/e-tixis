@@ -11,6 +11,7 @@ class Event extends Model
     'nama_event',
     'tanggal',
     'lokasi',
+    'deskripsi',
     'kuota',
     'harga',
     'gambar_event',

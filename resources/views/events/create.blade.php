@@ -119,6 +119,23 @@
 
                     <div>
                         <label class="block mb-2 font-semibold text-white/70">
+                            Deskripsi Event
+                        </label>
+
+                        <textarea
+                            name="deskripsi"
+                            rows="5"
+                            class="textarea textarea-bordered w-full bg-[#18182c] border-white/10 text-white"
+                            placeholder="Tuliskan deskripsi event, seperti tema acara, benefit, pembicara, rundown singkat, atau informasi penting lainnya..."
+                        >{{ old('deskripsi') }}</textarea>
+
+                        <p class="text-sm text-white/40 mt-2">
+                            Deskripsi ini akan ditampilkan kepada pengguna saat melihat event.
+                        </p>
+                    </div>
+
+                    <div>
+                        <label class="block mb-2 font-semibold text-white/70">
                             Harga Tiket
                         </label>
 

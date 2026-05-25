@@ -22,13 +22,14 @@ class EventController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'nama_event' => 'required',
-            'tanggal' => 'required|date',
-            'lokasi' => 'required',
-            'kuota' => 'required|integer|min:1',
-            'harga' => 'required|integer|min:0',
-            'gambar_event' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
-        ]);
+    'nama_event' => 'required',
+    'tanggal' => 'required|date',
+    'lokasi' => 'required',
+    'deskripsi' => 'nullable|string',
+    'kuota' => 'required|integer|min:1',
+    'harga' => 'required|integer|min:0',
+    'gambar_event' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
+]);
 
         $gambarPath = null;
 
@@ -37,13 +38,14 @@ class EventController extends Controller
         }
 
         Event::create([
-            'nama_event' => $request->nama_event,
-            'tanggal' => $request->tanggal,
-            'lokasi' => $request->lokasi,
-            'kuota' => $request->kuota,
-            'harga' => $request->harga,
-            'gambar_event' => $gambarPath,
-        ]);
+    'nama_event' => $request->nama_event,
+    'tanggal' => $request->tanggal,
+    'lokasi' => $request->lokasi,
+    'deskripsi' => $request->deskripsi,
+    'kuota' => $request->kuota,
+    'harga' => $request->harga,
+    'gambar_event' => $gambarPath,
+]);
 
         return redirect('/events')->with('success', 'Event berhasil ditambahkan.');
     }
@@ -56,13 +58,14 @@ class EventController extends Controller
     public function update(Request $request, Event $event)
     {
         $request->validate([
-            'nama_event' => 'required',
-            'tanggal' => 'required|date',
-            'lokasi' => 'required',
-            'kuota' => 'required|integer|min:1',
-            'harga' => 'required|integer|min:0',
-            'gambar_event' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
-        ]);
+    'nama_event' => 'required',
+    'tanggal' => 'required|date',
+    'lokasi' => 'required',
+    'deskripsi' => 'nullable|string',
+    'kuota' => 'required|integer|min:1',
+    'harga' => 'required|integer|min:0',
+    'gambar_event' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
+]);
 
         $gambarPath = $event->gambar_event;
 
@@ -74,15 +77,15 @@ class EventController extends Controller
             $gambarPath = $request->file('gambar_event')->store('event-images', 'public');
         }
 
-        $event->update([
-            'nama_event' => $request->nama_event,
-            'tanggal' => $request->tanggal,
-            'lokasi' => $request->lokasi,
-            'kuota' => $request->kuota,
-            'harga' => $request->harga,
-            'gambar_event' => $gambarPath,
-        ]);
-
+       $event->update([
+    'nama_event' => $request->nama_event,
+    'tanggal' => $request->tanggal,
+    'lokasi' => $request->lokasi,
+    'deskripsi' => $request->deskripsi,
+    'kuota' => $request->kuota,
+    'harga' => $request->harga,
+    'gambar_event' => $gambarPath,
+]);
         return redirect('/events')->with('success', 'Event berhasil diperbarui.');
     }
 
