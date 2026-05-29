@@ -1,58 +1,138 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# E-TIXIS - Web Ticketing System
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+E-TIXIS adalah aplikasi web ticketing berbasis Laravel yang dibuat untuk membantu proses pengelolaan event, pemesanan tiket, dan validasi tiket secara digital. Project ini dikembangkan sebagai implementasi pengembangan aplikasi web berbasis database dan dapat dijalankan secara lokal/offline.
 
-## About Laravel
+## Fitur Utama
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+* Autentikasi pengguna melalui login dan register
+* Role pengguna: admin, user, dan petugas
+* Admin dapat mengelola data event
+* User dapat melihat event dan melakukan pemesanan tiket
+* Sistem menghasilkan tiket dengan kode unik
+* Petugas dapat melakukan validasi tiket
+* Data tersimpan dan dikelola menggunakan database MySQL
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## Teknologi yang Digunakan
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+* Laravel
+* PHP
+* MySQL
+* Blade Template
+* HTML
+* CSS
+* JavaScript
+* Laragon
+* Visual Studio Code
+* phpMyAdmin
 
-## Learning Laravel
+## Role Pengguna
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+### Admin
 
-In addition, [Laracasts](https://laracasts.com) contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+Admin memiliki akses untuk mengelola data event, melihat data pemesanan, dan mengatur kebutuhan utama pada sistem.
 
-You can also watch bite-sized lessons with real-world projects on [Laravel Learn](https://laravel.com/learn), where you will be guided through building a Laravel application from scratch while learning PHP fundamentals.
+### User
 
-## Agentic Development
+User dapat melihat daftar event, melakukan pemesanan tiket, dan melihat tiket yang telah dipesan.
 
-Laravel's predictable structure and conventions make it ideal for AI coding agents like Claude Code, Cursor, and GitHub Copilot. Install [Laravel Boost](https://laravel.com/docs/ai) to supercharge your AI workflow:
+### Petugas
 
-```bash
-composer require laravel/boost --dev
+Petugas memiliki akses untuk melakukan validasi tiket berdasarkan kode tiket yang dimiliki oleh user.
 
-php artisan boost:install
+## Struktur Fitur
+
+```text
+Login / Register
+        |
+        v
+Dashboard
+        |
+        |-- Admin   -> Kelola Event
+        |-- User    -> Lihat Event, Pesan Tiket, Tiket Saya
+        |-- Petugas -> Validasi Tiket
 ```
 
-Boost provides your agent 15+ tools and skills that help agents build Laravel applications while following best practices.
+## Cara Menjalankan Project
 
-## Contributing
+1. Clone repository ini:
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+```bash
+git clone https://github.com/Aldo233/e-tixis.git
+```
 
-## Code of Conduct
+2. Masuk ke folder project:
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+```bash
+cd e-tixis
+```
 
-## Security Vulnerabilities
+3. Install dependency Laravel:
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+```bash
+composer install
+```
 
-## License
+4. Install dependency frontend:
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+```bash
+npm install
+```
+
+5. Salin file `.env.example` menjadi `.env`.
+
+```bash
+copy .env.example .env
+```
+
+6. Atur konfigurasi database pada file `.env`, contoh:
+
+```env
+DB_DATABASE=e_tixis
+DB_USERNAME=root
+DB_PASSWORD=
+```
+
+7. Generate application key:
+
+```bash
+php artisan key:generate
+```
+
+8. Jalankan migration:
+
+```bash
+php artisan migrate
+```
+
+9. Jalankan server Laravel:
+
+```bash
+php artisan serve
+```
+
+10. Jalankan Vite:
+
+```bash
+npm run dev
+```
+
+11. Buka aplikasi melalui browser:
+
+```text
+http://127.0.0.1:8000
+```
+
+## Status Project
+
+Project ini sudah dapat dijalankan secara lokal/offline dan memiliki fitur utama untuk pengelolaan event, pemesanan tiket, serta validasi tiket.
+
+## Catatan
+
+Project ini masih dapat dikembangkan lebih lanjut, seperti menambahkan fitur pembayaran, scan QR code, dashboard statistik, dan deployment ke hosting agar dapat diakses secara online.
+
+## Developer
+
+Aldo Riyantama, Delvina Nurahmatika, Aisha Indha Fajrani
+Mahasiswa Teknik Informatika
+Universitas Lampung
+GitHub: [Aldo233](https://github.com/Aldo233)
