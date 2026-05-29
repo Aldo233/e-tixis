@@ -126,6 +126,23 @@ http://127.0.0.1:8000
 
 Project ini sudah dapat dijalankan secara lokal/offline dan memiliki fitur utama untuk pengelolaan event, pemesanan tiket, serta validasi tiket.
 
+## Tampilan Aplikasi
+
+### Halaman Login
+![Halaman Login](screenshots/login-etixis.png)
+
+### Beranda
+![Beranda E-TIXIS](screenshots/beranda-etixis.png)
+
+### Daftar Event
+![Daftar Event](screenshots/daftarevent-etixis.png)
+
+### Kelola Event
+![Kelola Event](screenshots/kelolaevent-etixis.png)
+
+### Scan Tiket
+![Scan Tiket](screenshots/scanticket.png)
+
 ## Catatan
 
 Project ini masih dapat dikembangkan lebih lanjut, seperti menambahkan fitur pembayaran, scan QR code, dashboard statistik, dan deployment ke hosting agar dapat diakses secara online.
