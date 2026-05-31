@@ -51,8 +51,22 @@
 
         <div class="relative z-10 flex flex-col md:flex-row md:items-center gap-8">
 
-            <div class="w-32 h-32 rounded-[2rem] bg-purple-500/25 border border-white/15 flex items-center justify-center text-5xl font-black shadow-2xl shrink-0">
-                {{ $initial }}
+            {{-- WRAPPER AVATAR DENGAN TOMBOL PENSIL --}}
+            <div class="relative w-32 h-32 shrink-0">
+                {{-- Kotak Inisial --}}
+                <div class="w-full h-full rounded-[2rem] bg-purple-500/25 border border-white/15 flex items-center justify-center text-5xl font-black shadow-2xl">
+                    {{ $initial }}
+                </div>
+
+                {{-- Tombol Edit (Ikon Pensil) Melayang di Pojok Kanan Bawah --}}
+                <label for="profile_photo" class="absolute -bottom-1 -right-1 bg-purple-600 hover:bg-purple-500 text-white w-9 h-9 rounded-full flex items-center justify-center cursor-pointer shadow-xl transition-all duration-200 hover:scale-110 border-2 border-[#1c123d]">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
+                        <path d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z" />
+                    </svg>
+                </label>
+
+                {{-- Input File Tersembunyi (Terikat otomatis ke form update profil di partials) --}}
+                <input id="profile_photo" name="profile_photo" type="file" form="profile-update-form" class="hidden" accept="image/*" />
             </div>
 
             <div class="flex-1">
