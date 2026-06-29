@@ -304,7 +304,7 @@
                     </h3>
 
                     <p class="text-white/35 mt-1">
-                        Tiket Dibuat
+                        Tiket dibuat
                     </p>
 
                     <p class="text-emerald-400 text-sm mt-4">
