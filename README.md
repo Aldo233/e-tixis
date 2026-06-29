@@ -102,6 +102,18 @@ Dashboard
 
 ![Kelola Event](screenshots/kelolaevent-etixis.png)
 
+### Pesan Tiket
+
+![Pesan Tiket](screenshots/pesan-etixis.png)
+
+### Tiket Saya
+
+![Tiket Saya](screenshots/ticket-etixis.png)
+
+### Validasi Tiket Manual
+
+![Validasi Tiket Manual](screenshots/validasi-etixis.png)
+
 ### Scan Tiket
 
 ![Scan Tiket](screenshots/scanticket.png)
@@ -202,6 +214,8 @@ npm run dev
 ```
 
 ### 11. Jalankan Server Laravel
+
+Buka terminal baru, lalu jalankan:
 
 ```bash
 php artisan serve
