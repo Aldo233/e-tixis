@@ -274,7 +274,7 @@ Project ini sudah dapat dijalankan secara lokal dan memiliki fitur utama untuk p
 Video demo aplikasi akan ditambahkan pada bagian ini.
 
 ```text
-Link video demo: -
+Link video demo: [https://youtu.be/QuL_apLB9mA](url)
 ```
 
 ---
